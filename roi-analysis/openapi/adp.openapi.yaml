@@ -1,0 +1,32 @@
+openapi: 3.0.1
+
+servers:
+  - url: /api
+
+info:
+  title: ADP Open API Sepcification
+  version: 1.0.0
+    
+paths:
+  /mdl-uniquery/v1/metric-model:
+    $ref: ./mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-model
+  /mdl-uniquery/v1/metric-model-groups/{group_name}/metric-models:
+    $ref: ./mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-model-groups~1{group_name}~1metric-models
+  /mdl-uniquery/v1/metric-models/{ids}:
+    $ref: ./mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{ids}
+  /mdl-uniquery/v1/metric-models/{id}/field_values/{field_name}:
+    $ref: ./mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{id}~1field_values~1{field_name}
+  /mdl-uniquery/v1/metric-models/{id}/fields:
+    $ref: ./mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{id}~1fields
+  /mdl-uniquery/v1/metric-models/{id}/labels:
+    $ref: ./mdl-uniquery/mdl-uniquery.paths.yaml#/paths/~1api~1mdl-uniquery~1v1~1metric-models~1{id}~1labels
+    
+  /ontology-query/v1/knowledge-networks/{kn_id}/object-types/{ot_id}:
+    $ref: ./ontology-query/ontology-query.paths.yaml#/paths/~1ontology-query~1v1~1knowledge-networks~1{kn_id}~1object-types~1{ot_id}
+  /ontology-query/v1/knowledge-networks/{kn_id}/action-types/{at_id}:
+    $ref: ./ontology-query/ontology-query.paths.yaml#/paths/~1ontology-query~1v1~1knowledge-networks~1{kn_id}~1action-types~1{at_id}~1
+  /ontology-query/v1/knowledge-networks/{kn_id}/subgraph:
+    $ref: ./ontology-query/ontology-query.paths.yaml#/paths/~1ontology-query~1v1~1knowledge-networks~1{kn_id}~1subgraph
+  /ontology-query/v1/knowledge-networks/{kn_id}/object-types/{ot_id}/properties:
+    $ref: ./ontology-query/ontology-query.paths.yaml#/paths/~1ontology-query~1v1~1knowledge-networks~1{kn_id}~1object-types~1{ot_id}~1properties
+  
