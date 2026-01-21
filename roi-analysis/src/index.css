@@ -15,42 +15,48 @@
 body {
   margin: 0;
   font-family: "IBM Plex Sans", "Noto Sans SC", "PingFang SC", sans-serif;
-  background-color: #f8f5f0;
+  background-color: #f5f6fb;
 }
 
 .chat-drawer .ant-drawer-body,
 .copilot-drawer .ant-drawer-body {
   padding-bottom: 20px;
+  height: 100%;
+}
+
+.copilot-drawer {
+  height: 100%;
+}
+
+.chat-panel {
+  height: 100%;
+  min-height: 520px;
+  overflow: hidden;
+}
+
+.chat-panel > :first-child {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
 }
 
 .copilot-drawer .ant-drawer-mask {
-  background: transparent;
+  display: none;
 }
 
 .copilot-drawer .ant-drawer-content-wrapper {
-  top: 80px !important;
-  right: 24px !important;
-  height: calc(100vh - 160px) !important;
-  width: 420px !important;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
-  border-radius: 20px;
+  position: static !important;
+  transform: none !important;
+  height: 100% !important;
+  width: 100% !important;
+  box-shadow: none;
+  border-radius: 0;
   overflow: hidden;
 }
 
 .copilot-drawer .ant-drawer-content {
-  border-radius: 20px;
-}
-
-.copilot-floating {
-  position: fixed;
-  right: 24px;
-  top: 80px;
-  width: 420px;
-  height: calc(100vh - 160px);
-  z-index: 60;
-  pointer-events: none;
-}
-
-.copilot-floating > * {
-  pointer-events: auto;
+  height: 100%;
+  border-radius: 0;
 }

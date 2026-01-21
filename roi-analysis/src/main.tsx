@@ -31,7 +31,7 @@ const render = (props?: MicroAppProps) => {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: "#b45309",
+            colorPrimary: "#2f5de2",
             colorTextBase: "#1f2937",
             fontFamily:
               "'IBM Plex Sans', 'Noto Sans SC', 'PingFang SC', sans-serif"
@@ -73,4 +73,3 @@ renderWithQiankun({
 if (!qiankunWindow.__POWERED_BY_QIANKUN__) {
   render();
 }
-
