@@ -1,0 +1,75 @@
+编写一个 Python3 脚本，实现 DIP 应用构建 & 打包
+
+# 规则
+- 在进行代码改造、构建或打包任务前，仔细阅读 README.md
+- 以本文件所在目录为工作目录
+- 不要在项目代码中直接 import 任何代码文件，把代码文件复制到正确的位置后，再从该位置导入代码文件
+- 不要修改 templates、resources、scripts 中的原文件。
+- 使用 jinja2 作为模板引擎，从 config.yaml 读取变量
+- 脚本文件支持传入 --os 参数和 --arch 参数，用于指定应用包的运行架构
+  * --os: 目前仅支持 linux （默认）
+  * --arch：支持 amd64 和 arm64 （必填）
+- 构建、打包需要使用到的参数来源：
+  * {name}: 从 `config.yaml#name` 读取
+  * {tag}: 从 `config.yaml#version` 读取
+
+# 流程
+脚本需要包含以下流程：
+1. [ ] 在 .cache 目录下创建任务子目录（后续使用 {task_dir} 引用）存放临时缓存文件
+2. [ ] 执行 `npm run build` 编译 `dist` 目录
+3. [ ] 复制 `dist` 目录
+4. [ ] 写入 application.key
+5. [ ] 配置 nginx.conf
+6. [ ] 创建 manifest.yaml
+7. [ ] 创建 Dockerfile
+8. [ ] 创建 Helm Charts 配置
+9. [ ] 构建镜像包 和 Helm Chart 包
+10. [ ] 构建 DIP 安装包
+
+## 复制 `dist` 目录
+将编译出的 `dist` 目录复制到 {task_dir} 下
+
+## 写入 application.key
+读取 config.yaml#key 字段，写入 `{task_dir}/package/{arch}/application.key`
+
+## 配置 nginx.conf
+读取 nginx 配置模板，使用 jinja2 替换变量后，写入 `{task_dir}/nginx.conf`
+
+## 创建 manifest.yaml
+读取 manifest.yaml 模板，使用 jinja2 替换变量后，写入 `{task_dir}/package/{arch}/manifest.yaml`
+
+## 创建 Dockerfile
+读取 Dockerfile 模板，使用 jinja2 替换变量后，写入 `{task_dir}/Dockerfile`
+
+## 创建 Helm Charts 配置
+- 读取 templates/charts/Chart.yaml 文件，使用 jingja2 替换后，写入 `{task_dir}/charts/Chart.yaml`
+- 读取 templates/charts/values.yaml 文件，使用 jingja2 替换后，写入 `{task_dir}/charts/values.yaml`
+- 将 templates/charts 目录下的其他文件复制到 `{task_dir}/charts/` 下
+
+## 构建镜像包 和 Helm Chart 包
+执行以下 Bash 命令，注意：
+1. 替换 {name}、{tag} 为 config.yaml 中的参数
+2. 替换 {arch} 为执行脚本时传入的 --arch 参数
+3. 替换 {task_dir} 为执行脚本时生成的临时目录
+
+```bash
+  docker buildx build \
+    --platform linux/{arch} \
+    -t registry.aishu.cn:15000/{name}:{tag} \
+    --load \
+    . \
+  &&
+  skopeo copy \
+    --override-os linux \
+    --override-arch {arch} \
+    docker-daemon:registry.aishu.cn:15000/{name}:{tag} \
+    oci-archive:{task_dir}/package/{arch}/packages/images/{name}-{tag}_{arch}.tar:registry.aishu.cn:15000/{name}:{tag} \
+  &&
+  helm lint {task_dir}/charts 
+  &&
+  helm package {task_dir}/charts \
+    --destination {task_dir}/package/{arch}/packages/charts/{name}-{tag}_{arch}.tgz
+```
+
+## 构建 DIP 安装包
+将 {task_dir}/package/{arch} 目录下的文件打包成 DIP 应用安装包，保存在打包目录下，输出到：{task_dir}/package/{name}-{tag}_{arch}.dip

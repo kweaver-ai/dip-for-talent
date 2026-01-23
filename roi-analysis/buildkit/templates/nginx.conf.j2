@@ -1,0 +1,40 @@
+server {
+    # 监听端口（根据实际情况修改）
+    listen {{ port }};
+    listen [::]:{{ port }};
+
+    # 隐藏版本号（安全建议）
+    server_tokens off;
+
+    # 微应用的访问路径配置
+    # 注意：location 后面的路径就是 entry 中的路径部分
+    location /{{ name }} {
+        # 静态文件缓存配置
+        if ($request_filename ~* ^.*[.](html|htm)$) {
+            expires 0;
+            add_header Cache-Control "no-store";
+        }
+
+        if ($request_filename ~* ^.*[.](js|css|png|jpg|svg|ico)$) {
+            add_header Cache-Control "public, max-age=2592000";
+        }
+
+        # 构建后的 dist 目录，在打包镜像时会放到 /app/dist 下
+        alias "/app/dist";
+        index index.html;
+        
+        # 支持前端路由（重要：必须配置）
+        try_files $uri $uri/ /{{ name }}/index.html;
+    }
+
+    # 健康检查端点（K8s 探针使用）
+    location = /probe {
+        return 200 "ok";
+    }
+
+    # 错误页面
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}

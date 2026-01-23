@@ -2250,9 +2250,7 @@ const App = ({ token, setMicroAppState, onMicroAppStateChange }: AppProps) => {
           <div className="text-lg font-semibold text-slate-800">
             人力资本ROI分析
           </div>
-          <div className="flex items-center gap-3">
-            <Button>返回上一层</Button>
-          </div>
+          <div className="flex items-center gap-3" />
         </div>
       </header>
 
@@ -2481,7 +2479,7 @@ const App = ({ token, setMicroAppState, onMicroAppStateChange }: AppProps) => {
                 </div>
                 <div className="pt-4">
                   <div className="space-y-4">
-                    <div className="grid grid-cols-[minmax(0,1fr)_120px_120px] gap-3 text-xs text-slate-400">
+                    <div className="score-grid grid gap-3 text-xs text-slate-400">
                       <div>指标项</div>
                       <div className="text-center">当前值</div>
                       <div className="text-center">基准值</div>
@@ -2502,7 +2500,7 @@ const App = ({ token, setMicroAppState, onMicroAppStateChange }: AppProps) => {
                       : scoreMetricsToRender.map((metric) => (
                             <div
                               key={metric.id}
-                              className="grid grid-cols-[minmax(0,1fr)_120px_120px] items-center gap-3 rounded-xl border border-slate-100 px-4 py-3"
+                              className="score-grid score-row items-center gap-3 rounded-xl border border-slate-100 px-4 py-3"
                             >
                               <div>
                                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">

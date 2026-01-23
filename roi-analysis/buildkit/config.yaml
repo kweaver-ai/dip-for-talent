@@ -1,0 +1,8 @@
+namespace: anyshare # Kubernetes 命名空间，如果你不知道这是什么就别去动。
+name: dip-for-talent # 应用名称
+alias: KWeaver 智能人才分析 # 应用别名，会显示在 DIP 平台的界面上。
+version: 0.1.1 # 符合语义版本规范的版本号。
+category: DIP for Talent # 应用分类，会显示在 DIP 平台的界面上。
+port: 8751 # 应用对外暴露的端口号。
+description: KWeaver 智能人才分析应用 # 应用描述，会显示在 DIP 应用卡片的介绍上。
+key: apR1B4T8Qm2KxWJZ7F9HcYE6D0S5Lc3N # （新应用一定要替换！）应用标识，32 位随机字符，用于确认应用唯一性，如果是同一个应用请保持这个 key 不变

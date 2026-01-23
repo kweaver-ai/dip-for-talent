@@ -1,0 +1,119 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$title: MicroAppProps
+
+MicroAppProps:
+  type: object
+  properties:
+    token:
+      type: object
+      properties:
+        $ref: '#/schema/GetAccessToken'
+        $ref: '#/schema/RefreshToken'
+        $ref: '#/schema/TokenExpiredHandler'
+    route:
+      $ref: '#/schema/Route'
+    User:
+      $ref: '#/schema/User'
+    renderAppMenu:
+      $ref: '#/schema/RenderAppMenu'
+    logout:
+      $ref: '#/schema/Logout'
+    SetMicroAppState:
+      $ref: '#/schema/SetMicroAppState'
+    onMicroAppStateChange:
+      $ref: '#/schema/MicroAppStateChangeHandler'
+    container:
+      $ref: '#/schema/RootContainer'
+
+schema:
+  GetAccessToken:
+    type: function
+    name: accessToken
+    summary: 获取 Access Token
+    returns:
+      type: string
+      description: 返回 Token
+
+  RefreshToken:
+    type: function
+    name: refreshToken
+    summary: 刷新 Access Token
+    returns:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: 返回新的 Access Token
+
+  TokenExpiredHandler:
+    type: function
+    name: onTokenExpired
+    summary: Token 过期处理函数
+    parameters:
+      - name: code
+        type: number
+        description: 可选的错误码
+
+  Route:
+    type: object
+    properties:
+      basename:
+        type: string
+        description: 应用路由基础路径，例如 "dip-hub/application/123"
+  
+  User:
+    type: object
+    properties:
+      id: 
+        type: string
+      vision_name:
+        type: getter
+        description: 获取用户显示名称
+        returns:
+          type: string
+      account:
+        type: getter
+        description: 获取用户账号
+    
+  RenderAppMenu:
+    type: function
+    description: 渲染应用菜单
+    parameters:
+      - name: container
+        type: (HTMLElement | string)
+  
+  Logout:
+    type: function
+    description: 用户登出函数
+  
+  SetMicroAppState:
+    type: function
+    description: 设置微应用状态
+    parameters:
+      - name: state
+        type: Record<string, any>
+    returns:
+      type: boolean
+
+  MicroAppStateChangeHandler:
+    type: function
+    description: 监听微应用状态变化
+    parameters:
+      - type: function
+        name: callback
+        description: 状态变化回调函数
+        parameters:
+          - name: state
+            type: any
+          - name: prev
+            type: any
+      - name: fireImmediately
+        type: boolean
+        description: 是否立即触发回调
+    returns:
+      type: function
+      description: 取消监听函数
+
+  RootContainer:
+    type: HTMLElement
+    description: 容器元素

@@ -171,3 +171,12 @@ body {
   height: 100%;
   border-radius: 0;
 }
+
+.score-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px 120px;
+}
+
+.score-row {
+  cursor: default;
+}

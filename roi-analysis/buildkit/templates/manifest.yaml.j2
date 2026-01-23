@@ -1,0 +1,12 @@
+manifest_version: 1
+name: {{ alias }}
+micro-app:
+  name: {{ name }}
+  entry: /{{ name }}/index.html
+  headless: false
+version: {{ version }}
+category: {{ category }}
+description: {{ description }}
+business-domain: db_public
+release-config:
+  namespace: {{ namespace }}

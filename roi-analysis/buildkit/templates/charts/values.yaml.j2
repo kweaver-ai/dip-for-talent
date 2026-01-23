@@ -1,0 +1,53 @@
+replicaCount: 1
+
+namespace: {{ namespace }}
+
+env:
+  language: zh_CN.UTF-8
+  timezone: Asia/Shanghai
+
+image:
+  registry: registry.aishu.cn:15000
+  repository: {{ name }}
+  tag: {{ version }}
+  pullPolicy: IfNotPresent
+
+nginx:
+  enabled: true
+
+service:
+  ingressclassname: 'class-443'
+  enableDualStack: false
+  type: ClusterIP
+  language: zh_CN
+  name: {{ name }}
+  port: {{ port }}
+  ingress:
+      port: {{ port }}
+      path: /{{ name }}  # 这个路径必须与 nginx.conf 中的 location 路径一致
+  livenessProbe:
+    httpGet:
+      path: /probe
+      port: {{ port }}
+    initialDelaySeconds: 25
+    periodSeconds: 50
+    timeoutSeconds: 20
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /probe
+      port: {{ port }}
+    initialDelaySeconds: 10
+    periodSeconds: 30
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+
+resources:
+  requests:
+    cpu: 1
+    memory: 1Gi
+  limits:
+    cpu: 2
+    memory: 4Gi
